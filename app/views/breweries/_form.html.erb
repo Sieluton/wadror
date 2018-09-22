@@ -4,9 +4,9 @@
       <h2><%= pluralize(brewery.errors.count, "error") %> prohibited this brewery from being saved:</h2>
 
       <ul>
-      <% brewery.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% brewery.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
