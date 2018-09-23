@@ -28,11 +28,7 @@ class MembershipsController < ApplicationController
     @membership = Membership.new params.require(:membership).permit(:beer_club_id)
     @membership.user = current_user
 
-    if @membership.save
-      redirect_to user_path current_user
-    else
-      #@beers = Beer.all
-      #render :new
+    if @membership.save redirect_to user_path current_user
     end
   end
 
@@ -61,13 +57,14 @@ class MembershipsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_membership
-      @membership = Membership.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def membership_params
-      params.require(:membership).permit(:beer_club_id, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_membership
+    @membership = Membership.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def membership_params
+    params.require(:membership).permit(:beer_club_id, :user_id)
+  end
 end
