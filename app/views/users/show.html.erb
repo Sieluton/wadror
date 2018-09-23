@@ -12,6 +12,19 @@
   <% end %>
 </p>
 
+<p>
+  <% if @user.beer_clubs.empty? %>
+    Not member of any clubs
+  <% else %>
+  member of
+  <ul>
+    <% @user.beer_clubs.each do |club| %>
+      <li><%= link_to club.name, beer_club_path(club.id) %> </li>
+    <% end %>
+  </ul>
+  <% end %>
+</p>
+
 <h3>
   ratings
 </h3>
