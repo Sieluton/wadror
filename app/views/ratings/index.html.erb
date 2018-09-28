@@ -5,5 +5,3 @@
     <li> <%= rating %> <%= link_to rating.user.username, user_path(rating.user_id) %> </li>
   <% end %>
 </ul>
-
-<%= link_to 'new rating', new_rating_path %>

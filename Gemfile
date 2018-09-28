@@ -9,6 +9,7 @@ gem 'rails', '~> 5.2.1'
 # Use sqlite3 as the database for Active Record
 group :development, :test do
   gem 'sqlite3'
+  gem 'rspec-rails', '~> 3.8'
 end
 group :production do
    gem 'pg'
@@ -60,6 +61,7 @@ group :development do
 end
 
 group :test do
+  gem 'factory_bot_rails'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
