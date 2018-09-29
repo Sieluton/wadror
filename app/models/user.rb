@@ -22,4 +22,11 @@ class User < ApplicationRecord
 
     ratings.order(score: :desc).limit(1).first.beer
   end
+
+  def favorite_style
+    return nil if ratings.empty?
+
+    beers.max(sum(beers.average_rating).where(beers.style))
+    # b = Array.new(beers.count) { Array.new(2) }
+  end
 end
