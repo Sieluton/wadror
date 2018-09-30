@@ -8,11 +8,22 @@ describe "Rating" do
   let!(:user) { FactoryBot.create :user }
 
   before :each do
-    sign_in(username:"Pekka", password:"Foobar1")
+    sign_in(username: user.username, password:"Foobar1")
+  end
+
+  it "lists the ratings and their total number" do
+    @ratings = [10, 20, 30]
+    @ratings.each do |rating_score|
+      FactoryBot.create(:rating, score: rating_score, user: user)
+    end
+    visit ratings_path
+    expect(page).to have_content "Amount of ratings #{@ratings.count}"
+    @ratings.each do |ratings_score|
+      expect(page).to have_content ratings_score
+    end
   end
 
   it "when given, is registered to the beer and user who is signed in" do
-    save_and_open_page
     visit new_rating_path
     select('iso 3', from:'rating[beer_id]')
     fill_in('rating[score]', with:'15')

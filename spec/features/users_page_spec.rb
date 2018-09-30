@@ -4,7 +4,7 @@ include Helpers
 
 describe "User" do
   before :each do
-    FactoryBot.create :user
+    FactoryBot.create(:user)
   end
 
   describe "who has signed up" do
@@ -16,7 +16,6 @@ describe "User" do
     end
 
     it "is redirected back to signin form if wrong credentials given" do
-      save_and_open_page
       sign_in(username: "Pekka", password: "wrong")
 
       expect(current_path).to eq(signin_path)
@@ -33,5 +32,16 @@ describe "User" do
     expect{
       click_button('Create User')
     }.to change{User.count}.by(1)
+  end
+
+  it "should show all rating made by that user" do
+    @ratings = [10, 20, 30]
+    @ratings.each do |rating_score|
+      FactoryBot.create(:rating, score: rating_score, user: user)
+    end
+    visit user_path(user)
+    @ratings.each do |ratings_score|
+      expect(page).to have_content ratings_score
+    end
   end
 end
