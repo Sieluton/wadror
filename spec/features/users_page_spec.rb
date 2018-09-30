@@ -3,7 +3,9 @@ require 'rails_helper'
 include Helpers
 
 describe "User" do
-  let(:user) { FactoryBot.create :user }
+  before :each do
+    @u = FactoryBot.create :user
+  end
 
   describe "who has signed up" do
     it "can signin with right credentials" do
@@ -32,20 +34,22 @@ describe "User" do
     }.to change{User.count}.by(1)
   end
 
-  it "should show all rating made by that user" do
+  it "should show all ratings made by that user" do
+    sign_in(username: "Matti", password: "Foobar1")
     @ratings = [10, 20, 30]
     @ratings.each do |rating_score|
-      FactoryBot.create(:rating, score: rating_score, user: user)
+      FactoryBot.create(:rating, score: rating_score, user: @u)
     end
-    visit user_path(user)
+    visit user_path(@u)
     @ratings.each do |ratings_score|
       expect(page).to have_content ratings_score
     end
   end
 
-  it "when user removes rating it is removed from the system" do
-    FactoryBot.create(:rating, user: user)
-    visit user_path(user)
+  it "when removes rating it is removed from the system" do
+    sign_in(username: "Pekka", password: "Foobar1")
+    FactoryBot.create(:rating, user: @u)
+    visit user_path(@u)
 
     expect{
         find_link('delete').click
