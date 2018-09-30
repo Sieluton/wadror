@@ -3,9 +3,7 @@ require 'rails_helper'
 include Helpers
 
 describe "User" do
-  before :each do
-    FactoryBot.create(:user)
-  end
+  let(:user) { FactoryBot.create :user }
 
   describe "who has signed up" do
     it "can signin with right credentials" do
@@ -43,5 +41,14 @@ describe "User" do
     @ratings.each do |ratings_score|
       expect(page).to have_content ratings_score
     end
+  end
+
+  it "when user removes rating it is removed from the system" do
+    FactoryBot.create(:rating, user: user)
+    visit user_path(user)
+
+    expect{
+        find_link('delete').click
+    }.to change{Rating.count}.from(1).to(0)
   end
 end
