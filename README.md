@@ -2,6 +2,7 @@
 
 [Travis](https://travis-ci.org/Sieluton/wadror.svg?branch=master)
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/b8a3647f86eee60f98fb/maintainability)](https://codeclimate.com/github/Sieluton/wadror/maintainability)
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
