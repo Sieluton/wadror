@@ -4,13 +4,16 @@
   <%= @user.username %>
 </h2>
 
-<p>
-  <% if @user.ratings.empty? %>
-    has not rate any beer
-  <% else %>
+<% if @user.ratings.empty? %>
+  <p>has not rate any beer</p>
+<% else %>
+  <p>
     Has made <%= pluralize(@user.ratings.count, 'rating') %>, average rating <%= @user.average_rating %>
-  <% end %>
-</p>
+  </p>
+  <p>Favorite beer: <%= @user.favorite_beer.name %></p>
+  <p>Favorite brewery: <%= @user.favorite_brewery.name %></p>
+  <p>Preferred style: <%= @user.favorite_style %></p>
+<% end %>
 
 <p>
   <% if @user.beer_clubs.any? %>
@@ -19,7 +22,7 @@
     <li> <%= link_to club.name, club %> </li>
   <% end %>
 <% end %>
-</p>
+</pp>
 
 <h3>ratings</h3>
 
@@ -27,14 +30,14 @@
   <% @user.ratings.each do |rating| %>
     <li> <%= rating %>
       <% if @user == current_user %>
-        <%= link_to 'delete', rating, method: :delete, data: { confirm: 'Are you sure?' } if current_user %>
+        <%= link_to 'delete', rating, method: :delete, data: { confirm: 'Are you sure?' } %>
       <% end %>
     </li>
   <% end %>
 </ul>
 
 <% if @user == current_user %>
-  <%= link_to 'Edit', edit_user_path(@user) if current_user %>
+  <%= link_to 'Edit', edit_user_path(@user) %>
   <br>
-  <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } if current_user %>
+  <%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
 <% end %>
