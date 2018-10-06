@@ -9,13 +9,13 @@ class User < ApplicationRecord
   has_secure_password
 
   validates :username, uniqueness: true,
-                       length: { minimum: 3 }
+            length: { minimum: 3 }
 
   validates :password, length: { minimum: 4 },
-                       format: {
-                         with: /[A-Z].*\d|\d.*[A-Z]/,
-                         message: "must contain one capital letter and number"
-                       }
+            format: {
+              with: /[A-Z].*\d|\d.*[A-Z]/,
+              message: "must contain one capital letter and number"
+            }
 
   def favorite_beer
     return nil if ratings.empty?
@@ -23,10 +23,29 @@ class User < ApplicationRecord
     ratings.order(score: :desc).limit(1).first.beer
   end
 
+  def average_of(ratings)
+    ratings.sum(&:score).to_f / ratings.count
+  end
+
   def favorite_style
     return nil if ratings.empty?
 
-    beers.max(sum(beers.average_rating).where(beers.style))
-    # b = Array.new(beers.count) { Array.new(2) }
+    style_ratings = ratings.group_by{ |r| r.beer.style }
+    averages = style_ratings.map do |style, ratings|
+      { style: style, score: average_of(ratings) }
+    end
+
+    averages.max_by{ |r| r[:score] }[:style]
+  end
+
+  def favorite_brewery
+    return nil if ratings.empty?
+
+    style_ratings = ratings.group_by{ |r| r.beer.brewery }
+    averages = style_ratings.map do |brewery, ratings|
+      { brewery: brewery, score: average_of(ratings) }
+    end
+
+    averages.max_by{ |r| r[:score] }[:brewery]
   end
 end

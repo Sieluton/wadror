@@ -4,7 +4,7 @@ include Helpers
 
 describe "User" do
   before :each do
-    @u = FactoryBot.create :user
+    FactoryBot.create :user
   end
 
   describe "who has signed up" do
@@ -25,34 +25,12 @@ describe "User" do
 
   it "when signed up with good credentials, is added to the system" do
     visit signup_path
-    fill_in('user_username', with: 'Brian')
-    fill_in('user_password', with: 'Secret55')
-    fill_in('user_password_confirmation', with: 'Secret55')
+    fill_in('user_username', with:'Brian')
+    fill_in('user_password', with:'Secret55')
+    fill_in('user_password_confirmation', with:'Secret55')
 
     expect{
       click_button('Create User')
     }.to change{User.count}.by(1)
-  end
-
-  it "should show all ratings made by that user" do
-    sign_in(username: "Matti", password: "Foobar1")
-    @ratings = [10, 20, 30]
-    @ratings.each do |rating_score|
-      FactoryBot.create(:rating, score: rating_score, user: @u)
-    end
-    visit user_path(@u)
-    @ratings.each do |ratings_score|
-      expect(page).to have_content ratings_score
-    end
-  end
-
-  it "when removes rating it is removed from the system" do
-    sign_in(username: "Pekka", password: "Foobar1")
-    FactoryBot.create(:rating, user: @u)
-    visit user_path(@u)
-
-    expect{
-        find_link('delete').click
-    }.to change{Rating.count}.from(1).to(0)
   end
 end
