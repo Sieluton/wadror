@@ -75,6 +75,8 @@ RSpec.describe User, type: :model do
     end
 
     describe "style" do
+      let!(:ipa) { FactoryBot.create(:style, name: 'IPA') }
+
       it "has method for determining one" do
         expect(user).to respond_to(:favorite_style)
       end
@@ -84,21 +86,25 @@ RSpec.describe User, type: :model do
       end
 
       it "is the style of the only rated if only one rating" do
-        create_beer_with_rating({ user: user, style: 'Pale Ale' }, 25)
+        create_beer_with_rating({ user: user, style: ipa}, 25)
 
-        expect(user.favorite_style).to eq('Pale Ale')
+        expect(user.favorite_style).to eq(ipa)
       end
 
       it "is the style of with highest average if several rated" do
-        create_beers_with_many_ratings({ user: user, style: 'Lager' }, 10, 20, 15, 7, 9)
-        create_beers_with_many_ratings({ user: user, style: 'IPA' }, 25, 45 )
-        create_beers_with_many_ratings({ user: user, style: 'Alt' }, 50, 10, 8)
+        s1 = FactoryBot.create(:style)
+        s2 = FactoryBot.create(:style)
+        create_beers_with_many_ratings({ user: user, style: s1 }, 10, 20, 15, 7, 9)
+        create_beers_with_many_ratings({ user: user, style: ipa }, 25, 45 )
+        create_beers_with_many_ratings({ user: user, style: s2 }, 50, 10, 8)
 
-        expect(user.favorite_style).to eq('IPA')
+        expect(user.favorite_style).to eq(ipa)
       end
     end
 
     describe "brewery" do
+      let!(:favorite) { FactoryBot.create(:brewery, name: 'Schlenkerla') }
+
       it "has method for determining one" do
         expect(user).to respond_to(:favorite_brewery)
       end
@@ -108,14 +114,12 @@ RSpec.describe User, type: :model do
       end
 
       it "is the style of the only rated if only one rating" do
-        favorite = FactoryBot.create(:brewery, name: 'Schlenkerla')
         create_beer_with_rating({ user: user, brewery: favorite }, 25)
 
         expect(user.favorite_brewery).to eq(favorite)
       end
 
       it "is the style of with highest average if several rated" do
-        favorite = FactoryBot.create(:brewery, name: 'Schlenkerla')
         b1 = FactoryBot.create(:brewery)
         b2 = FactoryBot.create(:brewery)
         create_beers_with_many_ratings({ user: user, brewery: b1 }, 10, 20, 15, 7, 9)
