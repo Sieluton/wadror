@@ -1,9 +1,84 @@
 <h2>List of ratings</h2>
 
-<p>Total number of ratings:  <%= @ratings.count %></p>
+<h3>Best beers</h3>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th></th>
+    <th>average</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @beers.each do |beer| %>
+    <tr>
+      <td><%= link_to beer.name, beer %></td>
+      <td><%= beer.average_rating %></td>
+      <td></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
 
+<h3>Best breweries</h3>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th></th>
+    <th>average</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @breweries.each do |brewery| %>
+    <tr>
+      <td><%= link_to brewery.name, brewery %></td>
+      <td><%= brewery.average_rating %></td>
+      <td></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<h3>Best styles</h3>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th></th>
+    <th>average</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @styles.each do |style| %>
+    <tr>
+      <td><%= link_to style.name, style %></td>
+      <td><%= style.average_rating %></td>
+      <td></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<h3>Most active users</h3>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th></th>
+    <th>ratings</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= link_to user.username, user %></td>
+      <td><%= user.ratings.count %></td>
+      <td></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<h3>recent ratings</h3>
 <ul>
-  <% @ratings.each do |rating| %>
-    <li> <%= rating %> <%= link_to rating.user.username, rating.user %></li>
+  <% @recent_ratings.each do |rating| %>
+    <li> <%= rating %> <%= link_to rating.user.username, rating.user %> at <%= rating.created_at %> </li>
   <% end %>
 </ul>

@@ -1,36 +1,35 @@
-<p id="notice"></p>
-
 <h2>
-  <%= @beer_club.name %> <%= @beer_club.city %>
+  <%= @beer.name %>
 </h2>
 
 <p>
-  Founded
-  <%= @beer_club.founded %>
+  <strong>Style:</strong>
+  <%= link_to @beer.style.name, @beer.style %>
 </p>
 
-<h3>Members</h3>
+<p>
+  <strong>Brewery:</strong>
+  <%= link_to @beer.brewery.name, @beer.brewery %>
+</p>
 
-<ul>
-  <% @beer_club.members.each do |member| %>
-    <li><%= link_to member.username, member %></li>
+<p>
+  <% if @beer.ratings.empty? %>
+    beer has not yet been rated!
+  <% else %>
+    Has <%= pluralize(@beer.ratings.count, 'rating') %>, average <%= @beer.average_rating %>
   <% end %>
-</ul>
+</p>
 
 <% if current_user %>
-  <% if @beer_club.members.include? current_user %>
-    <%= form_for(@membership, method: "delete") do |f| %>
-      <%= f.hidden_field :beer_club_id %>
-      <%= f.submit value: "end the membership" %>
-    <% end %>
-  <% else %>
-    <%= form_for(@membership) do |f| %>
-      <%= f.hidden_field :beer_club_id %>
-      <%= f.submit value: "join the club" %>
-    <% end %>
+  <h4>give a rating:</h4>
+
+  <%= form_for(@rating) do |f| %>
+    <%= f.hidden_field :beer_id %>
+    score: <%= f.number_field :score %>
+    <%= f.submit %>
   <% end %>
 
-  <%= link_to 'Edit', edit_beer_club_path(@beer_club) %>
+  <%= link_to 'Edit', edit_beer_path(@beer) %>
   <br>
-  <%= link_to 'Destroy', @beer_club, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <%= link_to 'Destroy', @beer, method: :delete, data: { confirm: 'Are you sure?' } %>
 <% end %>

@@ -7,5 +7,14 @@ class Brewery < ApplicationRecord
                                    greater_than: 1039,
                                    less_than_or_equal_to: ->(_) { Time.now.year } }
 
+  scope :active, -> { where active: true }
+  scope :retired, -> { where active: [nil,false] }
+
   include RatingAverage
+
+  def self.top(n)
+    sorted_by_rating_in_desc_order = Brewery.all.sort_by{ |b| -(b.average_rating || 0) }.first(n)
+    # palauta listalta parhaat n kappaletta
+    # miten? ks. http://www.ruby-doc.org/core-2.5.1/Array.html
+  end
 end
