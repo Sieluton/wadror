@@ -5,7 +5,7 @@ class Brewery < ApplicationRecord
   validates :name, presence: true
   validates :year, numericality: { only_integer: true,
                                    greater_than: 1039,
-                                   less_than_or_equal_to: ->(_) { Time.now.year } }
+                                   less_than_or_equal_to: -> ( ) { Time.now.year } }
 
   scope :active, -> { where active: true }
   scope :retired, -> { where active: [nil,false] }
