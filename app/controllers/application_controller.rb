@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user
-  helper_method :authenticate_admin
+  helper_method :current_user_is_admin
 
   def ensure_that_signed_in
     redirect_to signin_path, notice: 'you should be signed in' if current_user.nil?
@@ -12,8 +12,11 @@ class ApplicationController < ActionController::Base
     User.find(session[:user_id])
   end
 
-  def authenticate_admin
-    redirect_to root_path, alert: "Permissions denied" unless
-        current_user.admin?
+  def current_user_is_admin
+    current_user&.admin
+  end
+
+  def current_user_admin
+    redirect_to signin_path, notice: 'operation allowed only for admins' unless current_user_is_admin
   end
 end
